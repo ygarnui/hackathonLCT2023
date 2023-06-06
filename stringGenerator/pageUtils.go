@@ -1,4 +1,4 @@
-package stringGenerator
+package string_generator
 
 type PageMarkup struct {
 	HeaderStart int
@@ -88,6 +88,15 @@ func initTextMarkup(startPos int) *TextMarkup {
 		StartPos:      startPos,
 		CurPos:        startPos,
 		Step:          30,
+		ParagraphStep: 50,
+	}
+}
+
+func initTextMarkup2(startPos, step int) *TextMarkup {
+	return &TextMarkup{
+		StartPos:      startPos,
+		CurPos:        startPos,
+		Step:          step,
 		ParagraphStep: 50,
 	}
 }

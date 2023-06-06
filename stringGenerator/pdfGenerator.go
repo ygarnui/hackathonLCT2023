@@ -1,11 +1,9 @@
-package stringGenerator
+package string_generator
 
 import (
 	"bytes"
 	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	"html/template"
-	"log"
-	"os"
 	"strings"
 )
 
@@ -36,10 +34,10 @@ func (r *RequestPdf) ParseTemplate(templateFileName string, data interface{}) er
 	return nil
 }
 
-func (r *RequestPdf) GeneratePDF(pdfPath string) (bool, error) {
+func (r *RequestPdf) GeneratePDF(pdfPath string) ([]byte, error) {
 	pdfg, err := wkhtmltopdf.NewPDFGenerator()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	pageReader := wkhtmltopdf.NewPageReader(strings.NewReader(r.body))
@@ -62,20 +60,8 @@ func (r *RequestPdf) GeneratePDF(pdfPath string) (bool, error) {
 
 	err = pdfg.Create()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	err = pdfg.WriteFile(pdfPath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	dir, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
-
-	defer os.RemoveAll(dir + "/cloneTemplate")
-
-	return true, nil
+	return pdfg.Bytes(), nil
 }

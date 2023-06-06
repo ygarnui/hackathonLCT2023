@@ -1,12 +1,11 @@
-package stringGenerator
+package string_generator
 
 import (
-	"fmt"
 	"strconv"
 	"time"
 )
 
-func GenerateReport(strVal map[string]string, val map[string]float64) {
+func GenerateReport(strVal map[string]string, val map[string]float64) ([]byte, error) {
 	r := NewRequestPdf("")
 
 	//html template path
@@ -23,8 +22,9 @@ func GenerateReport(strVal map[string]string, val map[string]float64) {
 	pageWidth := 892
 	data := make(map[string]string)
 
-	data["PageHeight"] = "1256"
-	FontSizeText1 := 16
+	data["PageHeight"] = "1310"
+	data["PageWidth"] = "932"
+	FontSizeText1 := 15
 	ImagePosX := 120
 
 	data["FontSizeText1"] = getString(FontSizeText1)
@@ -138,6 +138,7 @@ func GenerateReport(strVal map[string]string, val map[string]float64) {
 
 	addMapData2Val(&data, &val, pageMarkUp3, "PersonalCount",
 		[]string{"ПЛАНИРУЕМАЯ ЧИСЛЕННОСТЬ", "ПЕРСОНАЛА"})
+	data["PersonalCount"] = strconv.FormatInt(int64(val["PersonalCount"]), 10)
 
 	addImageLine(&data, pageMarkUp3, "3", &numLinePage3, FontSizeText1, ImagePosX)
 
@@ -294,7 +295,12 @@ func GenerateReport(strVal map[string]string, val map[string]float64) {
 	data["LeftColumnPosPage5"] = "130"
 	data["LeftColumnPosPage6"] = "130"
 
-	data["LeftCalloutPos1"] = "75"
+	data["LeftCalloutPos1"] = "110"
+	textCalloutPos1 := initTextMarkup2(1170, 18)
+	data["CloudPos1"] = getNextRow(textCalloutPos1)
+	data["CloudPos2"] = getNextRow(textCalloutPos1)
+	data["CloudPos3"] = getNextRow(textCalloutPos1)
+	data["CloudPos4"] = getNextRow(textCalloutPos1)
 
 	data["RightColumnPosPage3"] = "490"
 	data["RightColumnPosPage4"] = "490"
@@ -320,12 +326,11 @@ func GenerateReport(strVal map[string]string, val map[string]float64) {
 	data["StylePages4"] = "sans-serif"
 	data["StylePages5"] = "sans-serif"
 
-	if err := r.ParseTemplate(templatePath, data); err == nil {
-		ok, _ := r.GeneratePDF(outputPath)
-		fmt.Println(ok, "pdf generated successfully")
-	} else {
-		fmt.Println(err)
+	if err := r.ParseTemplate(templatePath, data); err != nil {
+		return nil, err
 	}
+
+	return r.GeneratePDF(outputPath)
 }
 
 func addMapDataText1(data *map[string]string, pageMarkup *PageMarkup, name string, text string) {

@@ -1,4 +1,4 @@
-package stringGenerator
+package string_generator
 
 import (
 	"math"
@@ -34,7 +34,7 @@ func getUnits(val float64) string {
 	Units := []string{"", "тыс.", "млн.", "млрд.", "трлн.", "трлрд."}
 	for i := 5; i >= 0; i-- {
 		if val >= math.Pow(1000, float64(i)) {
-			return ", в " + Units[i] + "руб"
+			return " " + Units[i] + "руб"
 		}
 	}
 	return "руб"
