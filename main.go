@@ -52,6 +52,15 @@ func main() {
 	val["EquipmentPrice"] = 1
 	val["EstatePriceTo"] = 1
 
+	val["PersonalFrom"] = 1000000
+	val["PersonalTo"] = 10000000
+	val["EstateFrom"] = 2000000
+	val["EstateTo"] = 20000000
+	val["TaxFrom"] = 3000000
+	val["TaxTo"] = 30000000
+	val["ServiceFrom"] = 4000000
+	val["ServiceTo"] = 40000000
+
 	valStr := make(map[string]string)
 
 	valStr["UserName"] = "ygarnui"
