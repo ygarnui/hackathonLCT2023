@@ -65,9 +65,8 @@ func main() {
 
 	valStr["UserName"] = "ygarnui"
 	valStr["Industry"] = "Общее машиностроение (в т.ч. оборудование пищевой переработки, дорожностроительная и сельскохозяйственная техника)"
-	valStr["Industry"] = "Производство оружия, боеприпасов, спецхимии, военных машин"
 
-	valStr["Organization"] = "тип организации"
+	valStr["Organization"] = "ООО или ИП"
 	valStr["WorkersCount"] = "30"
 	valStr["District"] = "ЗАО"
 

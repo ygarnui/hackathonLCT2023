@@ -50,7 +50,7 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 	data["LeftColumnPosPage20"] = "140"
 	data["LeftColumnPosPage21"] = "105"
 
-	data["RightColumnPosPage2"] = "450"
+	data["RightColumnPosPage2"] = "480"
 
 	Organization := parseString(strVal["Industry"])
 
