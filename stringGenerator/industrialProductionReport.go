@@ -15,10 +15,6 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 	//outputPath := "storage/example.pdf"
 	outputPath := "storage/" + strVal["UserName"] + "_" + strconv.FormatInt(time.Now().Unix(), 10) + ".pdf"
 
-	pageMarkUp20 := initPageMarkup(200, 5, 580)
-	pageMarkUp21 := initPageMarkup(600, 2, 700)
-	pageMarkUp22 := initPageMarkup(730, 4, 1000)
-
 	pageWidth := 932
 	data := make(map[string]string)
 
@@ -37,6 +33,7 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 	textMarkup1 := initTextMarkup(220)
 
 	data["PageLeftPos1"] = "125"
+	data["PageTitleLeftPos1"] = "231"
 	data["PagePos10"] = getNextRow(textMarkup1)
 	data["PagePos11"] = getNextRow(textMarkup1)
 	data["PagePos12"] = getNextParagraph(textMarkup1)
@@ -53,6 +50,8 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 	data["RightColumnPosPage2"] = "480"
 
 	Organization := parseString(strVal["Industry"])
+
+	pageMarkUp20 := initPageMarkup(200, 5, 580)
 
 	data["IndustryColumn1"] = getBodyNextPositionRow(pageMarkUp20)
 	data["IndustryText1"] = Organization[0]
@@ -96,6 +95,8 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 
 	addImageLine(&data, pageMarkUp20, "2", &numLinePage2, FontSizeText1, ImagePosX, true)
 
+	pageMarkUp21 := initPageMarkup(pageMarkUp20.BodyCurrent, 2, pageMarkUp20.BodyCurrent+150)
+
 	data["ResultPos1"] = getBodyNextPositionRow(pageMarkUp21)
 	getBodyNextLeftPositionRow(pageMarkUp21)
 	data["ResultText1"] = "ИТОГОВЫЕ ЗНАЧЕНИЯ ВОЗМОЖНЫХ ЗАТРАТ"
@@ -111,6 +112,8 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 
 	addImageLine(&data, pageMarkUp21, "2", &numLinePage2, FontSizeText1, ImagePosX, true)
 
+	pageMarkUp22 := initPageMarkup(pageMarkUp21.BodyCurrent, 5, 1200)
+
 	addMapDataText1(&data, pageMarkUp22, "Detail", "ДЕТАЛИ РАСХОДОВ")
 	getBodyNextLeftPositionRow(pageMarkUp22)
 
@@ -124,19 +127,6 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 	addImageLine(&data, pageMarkUp22, "2", &numLinePage2, FontSizeText1, ImagePosX, true)
 
 	addMapData1FromToFull(&data, &val, pageMarkUp22, "Service", "УСЛУГИ")
-
-	//addMapDataText1(&data, pageMarkUp22, "Detail", "ДЕТАЛИ РАСХОДОВ")
-	//
-	//addMapDataText1(&data, pageMarkUp22, "Staff", "ПЕРСОНАЛ")
-	//addImageLine(&data, pageMarkUp22, "2", &numLinePage2, FontSizeText1, ImagePosX, true)
-	//
-	//addMapDataText1(&data, pageMarkUp22, "RealEstateRental", "ИМУЩЕСТВО ОРГАНИЗАЦИИ")
-	//addImageLine(&data, pageMarkUp22, "2", &numLinePage2, FontSizeText1, ImagePosX, true)
-	//
-	//addMapDataText1(&data, pageMarkUp22, "Taxes", "НАЛОГИ")
-	//addImageLine(&data, pageMarkUp22, "2", &numLinePage2, FontSizeText1, ImagePosX, true)
-	//
-	//addMapDataText1(&data, pageMarkUp22, "Services", "УСЛУГИ")
 
 	//страница 3
 	numLinePage3 := 0
