@@ -310,7 +310,7 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 	data["LeftColumnPosPage6"] = "130"
 
 	data["LeftCalloutPos1"] = data["PageLeftPos1"]
-	textCalloutPos1 := initTextMarkup2(1170, 18)
+	textCalloutPos1 := initTextMarkup2(1185, 18)
 	data["CloudPos1"] = getNextRow(textCalloutPos1)
 	data["CloudPos2"] = getNextRow(textCalloutPos1)
 	data["CloudPos3"] = getNextRow(textCalloutPos1)
