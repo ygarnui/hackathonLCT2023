@@ -23,6 +23,7 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 	data := make(map[string]string)
 
 	data["PageHeight"] = "1313"
+	data["PageHeight7"] = "1312"
 	data["PageHeight8"] = "1309"
 	data["PageWidth"] = strconv.FormatInt(int64(pageWidth), 10)
 	FontSizeText1 := 16
@@ -104,25 +105,25 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 	data["TotalColumn1"] = getBodyNextLeftPositionRow(pageMarkUp21)
 	data["TotalText1"] = "ИТОГО ВОЗМОЖНЫХ"
 	data["TotalText2"] = "РАСХОДОВ"
-	data["TotalFrom"] = floatToString(val["TotalFrom"])
-	data["TotalTo"] = floatToString(val["TotalTo"])
-	data["TotalUnits"] = getUnits(val["TotalUnits"])
+	data["TotalFrom"] = strconv.FormatInt(int64(val["TotalFrom"]), 10)
+	data["TotalTo"] = strconv.FormatInt(int64(val["TotalTo"]), 10)
+	data["TotalUnits"] = getUnits(1.0)
 
 	addImageLine(&data, pageMarkUp21, "2", &numLinePage2, FontSizeText1, ImagePosX, true)
 
 	addMapDataText1(&data, pageMarkUp22, "Detail", "ДЕТАЛИ РАСХОДОВ")
 	getBodyNextLeftPositionRow(pageMarkUp22)
 
-	addMapData1FromTo(&data, &val, pageMarkUp22, "Personal", "ПЕРСОНАЛ")
+	addMapData1FromToFull(&data, &val, pageMarkUp22, "Personal", "ПЕРСОНАЛ")
 	addImageLine(&data, pageMarkUp22, "2", &numLinePage2, FontSizeText1, ImagePosX, true)
 
-	addMapData1FromTo(&data, &val, pageMarkUp22, "Estate", "ИМУЩЕСТВО ОРГАНИЗАЦИИ")
+	addMapData1FromToFull(&data, &val, pageMarkUp22, "Estate", "ИМУЩЕСТВО ОРГАНИЗАЦИИ")
 	addImageLine(&data, pageMarkUp22, "2", &numLinePage2, FontSizeText1, ImagePosX, true)
 
-	addMapData1FromTo(&data, &val, pageMarkUp22, "Tax", "НАЛОГИ")
+	addMapData1FromToFull(&data, &val, pageMarkUp22, "Tax", "НАЛОГИ")
 	addImageLine(&data, pageMarkUp22, "2", &numLinePage2, FontSizeText1, ImagePosX, true)
 
-	addMapData1FromTo(&data, &val, pageMarkUp22, "Service", "УСЛУГИ")
+	addMapData1FromToFull(&data, &val, pageMarkUp22, "Service", "УСЛУГИ")
 
 	//addMapDataText1(&data, pageMarkUp22, "Detail", "ДЕТАЛИ РАСХОДОВ")
 	//
@@ -174,7 +175,7 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 
 	addImageLine(&data, pageMarkUp3, "3", &numLinePage3, FontSizeText1, ImagePosX, true)
 
-	addMapData1FromTo(&data, &val, pageMarkUp3, "PersonalNDFL", "НДФЛ")
+	addMapData2FromTo(&data, &val, pageMarkUp3, "PersonalNDFL", []string{"НАЛОГ НА ДОХОДЫ", "ФИЗИЧЕСКИХ ЛИЦ", "(НДФЛ)"})
 
 	//страница 4
 	numLinePage4 := 0
@@ -187,9 +188,8 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 	data["PagePos43"] = getNextRow(textMarkup4)
 	data["PagePos44"] = getNextParagraph(textMarkup4)
 	data["PagePos45"] = getNextRow(textMarkup4)
-	data["PagePos46"] = getNextRow(textMarkup4)
-	data["PagePos47"] = getNextParagraph(textMarkup4)
-	data["PagePos48"] = getNextRow(textMarkup4)
+	data["PagePos46"] = getNextParagraph(textMarkup4)
+	data["PagePos47"] = getNextRow(textMarkup4)
 
 	pageMarkUp4 := initPageMarkup(textMarkup4.CurPos, 3, 1100)
 
@@ -247,9 +247,6 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 	data["PagePos63"] = getNextRow(textMarkup6)
 	data["PagePos64"] = getNextParagraph(textMarkup6)
 	data["PagePos65"] = getNextRow(textMarkup6)
-	data["PagePos66"] = getNextRow(textMarkup6)
-	data["PagePos67"] = getNextParagraph(textMarkup6)
-	data["PagePos68"] = getNextRow(textMarkup6)
 
 	pageMarkUp6 := initPageMarkup(textMarkup6.CurPos, 3, 1100)
 
@@ -260,7 +257,7 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 	addImageLine(&data, pageMarkUp6, "6", &numLinePage6, FontSizeText1, ImagePosX, res)
 
 	addMapData2FromTo(&data, &val, pageMarkUp6, "Financial",
-		[]string{"СТОИМОСТЬ ОКАЗАНИЯ", "УСЛУГ ПО БУХ.УЧЕТУ"})
+		[]string{"СТОИМОСТЬ ОКАЗАНИЯ", "УСЛУГ ПО БУХГАЛТЕРСКОМУ", "УЧЕТУ"})
 
 	//страница 7
 	textMarkup7 := initTextMarkup(220)
@@ -382,13 +379,31 @@ func addMapData1FromTo(data *map[string]string, val *map[string]float64, pageMar
 	return false
 }
 
+func addMapData1FromToFull(data *map[string]string, val *map[string]float64, pageMarkup *PageMarkup, name string, text string) bool {
+
+	if (*val)[name+"To"] > 0 {
+		(*data)[name+"Pos1"] = getBodyNextPositionRow(pageMarkup)
+		(*data)[name+"Column1"] = getBodyNextLeftPositionRow(pageMarkup)
+		(*data)[name+"Text1"] = text
+		(*data)[name+"From"] = strconv.FormatInt(int64((*val)[name+"From"]), 10)
+		(*data)[name+"To"] = strconv.FormatInt(int64((*val)[name+"To"]), 10)
+		(*data)[name+"Units"] = getUnits(1.0)
+		return true
+	}
+	return false
+}
+
 func addMapData2FromTo(data *map[string]string, val *map[string]float64, pageMarkup *PageMarkup, name string, vec []string) bool {
 	if (*val)[name+"To"] > 0 {
 		(*data)[name+"Pos1"] = getBodyNextPositionRow(pageMarkup)
-		(*data)[name+"Pos2"] = getBodyNextPosition(pageMarkup)
-		(*data)[name+"Column1"] = getBodyNextLeftPositionRow(pageMarkup)
 		(*data)[name+"Text1"] = vec[0]
-		(*data)[name+"Text2"] = vec[1]
+
+		for i := 1; i < len(vec); i++ {
+			(*data)[name+"Pos"+getString(i+1)] = getBodyNextPosition(pageMarkup)
+			(*data)[name+"Text"+getString(i+1)] = vec[i]
+		}
+		(*data)[name+"Column1"] = getBodyNextLeftPositionRow(pageMarkup)
+
 		(*data)[name+"From"] = floatToStringFrom((*val)[name+"From"], (*val)[name+"To"])
 		(*data)[name+"To"] = floatToString((*val)[name+"To"])
 		(*data)[name+"Units"] = getUnits((*val)[name+"To"])
