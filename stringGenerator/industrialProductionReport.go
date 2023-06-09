@@ -19,13 +19,13 @@ func GenerateReport(strVal map[string]string, val map[string]float64) (bool, err
 	pageMarkUp21 := initPageMarkup(600, 2, 700)
 	pageMarkUp22 := initPageMarkup(730, 4, 1000)
 
-	pageWidth := 892
+	pageWidth := 932
 	data := make(map[string]string)
 
 	data["PageHeight"] = "1313"
-	data["PageHeight8"] = "1312"
-	data["PageWidth"] = "932"
-	FontSizeText1 := 15
+	data["PageHeight8"] = "1309"
+	data["PageWidth"] = strconv.FormatInt(int64(pageWidth), 10)
+	FontSizeText1 := 16
 	ImagePosX := 120
 
 	data["FontSizeText1"] = getString(FontSizeText1)
@@ -374,7 +374,7 @@ func addMapData1FromTo(data *map[string]string, val *map[string]float64, pageMar
 		(*data)[name+"Pos1"] = getBodyNextPositionRow(pageMarkup)
 		(*data)[name+"Column1"] = getBodyNextLeftPositionRow(pageMarkup)
 		(*data)[name+"Text1"] = text
-		(*data)[name+"From"] = floatToString((*val)[name+"From"])
+		(*data)[name+"From"] = floatToStringFrom((*val)[name+"From"], (*val)[name+"To"])
 		(*data)[name+"To"] = floatToString((*val)[name+"To"])
 		(*data)[name+"Units"] = getUnits((*val)[name+"To"])
 		return true
@@ -389,7 +389,7 @@ func addMapData2FromTo(data *map[string]string, val *map[string]float64, pageMar
 		(*data)[name+"Column1"] = getBodyNextLeftPositionRow(pageMarkup)
 		(*data)[name+"Text1"] = vec[0]
 		(*data)[name+"Text2"] = vec[1]
-		(*data)[name+"From"] = floatToString((*val)[name+"From"])
+		(*data)[name+"From"] = floatToStringFrom((*val)[name+"From"], (*val)[name+"To"])
 		(*data)[name+"To"] = floatToString((*val)[name+"To"])
 		(*data)[name+"Units"] = getUnits((*val)[name+"To"])
 		return true

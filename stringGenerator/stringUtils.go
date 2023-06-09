@@ -30,6 +30,26 @@ func floatToString(val float64) string {
 	return resVal + "." + resOst
 }
 
+func floatToStringFrom(val float64, to float64) string {
+	newVal := 0.0
+	st := 0.0
+	n := 0
+	for i := 5; i >= 0; i-- {
+		st = math.Pow(1000, float64(i))
+		if to >= st {
+			newVal = val / st
+			n = i
+			break
+		}
+	}
+	intVal := int64(newVal)
+	ost := val - float64(intVal)*st
+	ost = ost / math.Pow(10, float64(n)*3-2)
+	resVal := strconv.FormatInt(int64(newVal), 10)
+	resOst := strconv.FormatInt(int64(ost), 10)
+	return resVal + "." + resOst
+}
+
 func getUnits(val float64) string {
 	Units := []string{"", "тыс.", "млн.", "млрд.", "трлн.", "трлрд."}
 	for i := 5; i >= 0; i-- {

@@ -52,8 +52,8 @@ func main() {
 	val["EquipmentPrice"] = 1
 	val["EstatePriceTo"] = 1
 
-	val["PersonalFrom"] = 1000000
-	val["PersonalTo"] = 10000000
+	val["PersonalFrom"] = 100000
+	val["PersonalTo"] = 1000000
 	val["EstateFrom"] = 2000000
 	val["EstateTo"] = 20000000
 	val["TaxFrom"] = 3000000

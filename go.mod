@@ -2,4 +2,4 @@ module PDFGenerator
 
 go 1.20
 
-require github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.0 // indirect
+require github.com/SebastiaanKlippert/go-wkhtmltopdf v1.8.2
